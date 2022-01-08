@@ -1,0 +1,110 @@
+---
+include: fedora-common-ostree.yaml
+
+ref: sway-desktop
+rojig:
+  name: sway-desktop
+  summary: "Sway Desktop"
+  license: MIT
+
+repos:
+  - fedora-35
+  - fedora-35-updates
+  - fedora-35-updates-testing
+
+packages:
+# hardware/drivers
+  - kernel
+  - kernel-modules-extra
+  - iwl6000g2a-firmware
+  - iwl7260-firmware
+  - alsa-sof-firmware
+  - NetworkManager-wifi
+  - NetworkManager-openvpn-gnome
+  - sane-backends
+  - sane-backends-drivers-scanners
+  - powertop
+  - iwd
+  - wpa_supplicant
+  - udisks2-lvm2
+  - opensc
+# basic system
+  - acl
+  - attr
+  - basesystem
+  - cryptsetup
+  - dnsmasq
+  - fedora-workstation-backgrounds
+  - filesystem
+  - glibc-langpack-de
+  - glibc-langpack-en
+  - hostname
+  - iproute
+  - kbd
+  - nss-altfiles
+  - pciutils
+  - selinux-policy-targeted
+  - sudo
+  - usbutils
+# shell tools and development
+  - bc
+  - gnupg2
+  - fpaste
+  - lsof
+  - man-db
+  - mtr
+  - tree
+  - bzip2
+  - zip
+  - unzip
+  - vim-enhanced
+  - bash-completion
+  - fish
+  - qemu-system-x86-core
+  - qemu-ui-sdl
+  - qemu-img
+  - openvpn
+  - openssh-server
+  - systemd-container
+  - git
+  - make
+
+# desktop plumbing/apps
+  - dejavu-sans-fonts
+  - dejavu-serif-fonts
+  - dejavu-sans-mono-fonts
+  - fontawesome-fonts
+  - google-noto-emoji-color-fonts
+  - fira-code-fonts
+
+  # for wf-recorder
+  - xdg-desktop-portal-gtk
+
+  - pcmanfm
+  - nm-connection-editor
+  - gnome-keyring
+  - pinentry-gnome3
+  - lxpolkit
+  - gnome-disk-utility
+  - gtimelog
+  - rofimoji
+
+# sway/wayland desktop
+  - sway
+  - swayidle
+  - swaylock
+  - kanshi
+  - mako
+  - waybar
+  - slurp
+  - grim
+  - xorg-x11-server-Xwayland
+  - wofi
+  - brightnessctl
+  - wl-clipboard
+
+exclude-packages:
+  # recommended by gtimelog
+  - yelp
+
+postprocess-script: sway-post.sh

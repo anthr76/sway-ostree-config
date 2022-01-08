@@ -1,3 +1,4 @@
+---
 name: build
 on:
   schedule:
@@ -7,18 +8,25 @@ jobs:
   build:
     runs-on: ubuntu-latest
     container:
-      image: docker.io/fedora:latest
+      image: registry.fedoraproject.org/fedora-minimal:latest
       # Fix SELinux for the built OSTree: https://github.com/coreos/rpm-ostree/issues/1943
       options: --privileged --security-opt label:disable
     steps:
       - name: Install dependencies
-        run: dnf install -y rpm-ostree selinux-policy selinux-policy-targeted policycoreutils
+        run: microdnf install -y rpm-ostree selinux-policy selinux-policy-targeted policycoreutils tar awscli
 
       - name: Clone repository
         uses: actions/checkout@v2
 
       - name: Build OSTree
         run: ./compose.sh
+
+      - name: Push to S3
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        run: |
+          aws --endpoint-url https://s3.kutara.io s3 sync /var/tmp/repo s3://${{ secrets.AWS_S3_BUCKET }} --acl public-read
 
       # upload-artifact@v2 has trouble with tens of thousands of files
       - name: Create repo tarball

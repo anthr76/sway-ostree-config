@@ -4,7 +4,18 @@ The goal of this repo is to build a Fedora desktop variant of [Sway](https://git
 
 This would be a stop-gap until sway has an offical variant like Silverblue(Gnome)/Kiniote(KDE)
 
-Minimal opinions are expressed, but this is not intended for an everyday user.
+Minimal opinions are expressed, but this is not intended for an everyday user. This is mostly from the work of https://github.com/martinpitt/ostree-pitti-workstation with some more sane defaults to help an everyday user. Everyone has opinions!
+
+I pair this well with toolbox & [boombox-arch](https://github.com/anthr76/boombox)
+
+To test local composes you can do something like:
+
+```
+podman run --rm -it --privileged \
+  --security-opt seccomp=unconfined --security-opt label=disable \
+  -v $PWD:/host:z -w /host registry.fedoraproject.org/fedora-minimal:latest bash -c \
+  'microdnf install -y rpm-ostree selinux-policy selinux-policy-targeted policycoreutils && ./compose.sh'
+```
 
 
 For some background, see:
