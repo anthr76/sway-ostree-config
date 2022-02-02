@@ -4,6 +4,59 @@ set -xeuo pipefail
 # Enable SysRQ
 echo 'kernel.sysrq = 1' > /usr/lib/sysctl.d/90-sysrq.conf
 
+
+# set up PAM for systemd-homed (https://bugzilla.redhat.com/show_bug.cgi?id=1806949)
+patch /etc/pam.d/system-auth <<EOF
+--- /usr/etc/pam.d/system-auth
++++ /etc/pam.d/system-auth
+@@ -1,16 +1,20 @@
+ #%PAM-1.0
+ auth        required      pam_env.so
+ auth        sufficient    pam_unix.so try_first_pass nullok
++-auth       sufficient    pam_systemd_home.so  # added
+ auth        required      pam_deny.so
+-account     required      pam_unix.so
++account     sufficient    pam_unix.so
++-account    sufficient    pam_systemd_home.so  # added
+ password    requisite     pam_pwquality.so try_first_pass local_users_only retry=3 authtok_type=
+ password    sufficient    pam_unix.so try_first_pass use_authtok nullok yescrypt shadow
++-password   sufficient    pam_systemd_home.so  # added
+ password    required      pam_deny.so
+ session     optional      pam_keyinit.so revoke
+ session     required      pam_limits.so
++-session    optional      pam_systemd_home.so  # added
+ -session     optional      pam_systemd.so
+ session     [success=1 default=ignore] pam_succeed_if.so service in crond quiet use_uid
+ session     required      pam_unix.so
+EOF
+patch /etc/pam.d/password-auth <<EOF
+--- password-auth
++++ password-auth
+@@ -1,16 +1,20 @@
+ #%PAM-1.0
+ auth        required      pam_env.so
+ auth        sufficient    pam_unix.so try_first_pass nullok
++-auth       sufficient    pam_systemd_home.so  # added
+ auth        required      pam_deny.so
+-account     required      pam_unix.so
++account     sufficient    pam_unix.so
++-account    sufficient    pam_systemd_home.so  # added
+ password    requisite     pam_pwquality.so try_first_pass local_users_only retry=3 authtok_type=
+ password    sufficient    pam_unix.so try_first_pass use_authtok nullok yescrypt shadow
++-password   sufficient    pam_systemd_home.so  # added
+ password    required      pam_deny.so
+ session     optional      pam_keyinit.so revoke
+ session     required      pam_limits.so
++-session    optional      pam_systemd_home.so  # added
+ -session     optional      pam_systemd.so
+ session     [success=1 default=ignore] pam_succeed_if.so service in crond quiet use_uid
+ session     required      pam_unix.so
+EOF
+
+# homed is missing a lot of SELinux policy (https://bugzilla.redhat.com/show_bug.cgi?id=1809878)
+# "disabled" breaks rpm-ostree (https://bugzilla.redhat.com/show_bug.cgi?id=1882933), so just use permissive
+sed -i 's/SELINUX=enforcing/SELINUX=permissive/' /etc/selinux/config
+
 ln -sfn /run/systemd/resolve/stub-resolv.conf /etc/resolv.conf
 
 # enable other units
