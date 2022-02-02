@@ -68,6 +68,12 @@ packages:
   - systemd-container
   - git
   - make
+  - ddccontrol
+  - qemu-kvm
+  - qemu-user-static
+  - libvirt-daemon-kvm
+  # Maybe remove
+  - network-manager-applet
 
 # desktop plumbing/apps
   - dejavu-sans-fonts
@@ -92,10 +98,13 @@ packages:
 
 # sway/wayland desktop
   - sway
+  - sway-systemd
+  - virt-install
   - swayidle
   - swaylock
   - kanshi
   - mako
+  - playerctl
   - waybar
   - slurp
   - grim
