@@ -67,6 +67,7 @@ packages:
   - openssh-server
   - systemd-container
   - git
+  - patchutils
   - make
   - ddccontrol
   - qemu-kvm
