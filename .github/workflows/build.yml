@@ -23,7 +23,7 @@ jobs:
       options: --privileged --security-opt label:disable
     steps:
       - name: Install dependencies
-        run: microdnf install -y rpm-ostree ostree selinux-policy selinux-policy-targeted policycoreutils patch skopeo
+        run: microdnf install -y rpm-ostree ostree selinux-policy selinux-policy-targeted policycoreutils patch skopeo podman
 
       - name: Clone repository
         uses: actions/checkout@v2
