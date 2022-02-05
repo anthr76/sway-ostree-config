@@ -12,6 +12,7 @@ env:
   REGISTRY_PASSWORD: ${{ github.token }}
   IMAGE_REGISTRY: ghcr.io/${{ github.repository_owner }}
   XDG_RUNTIME_DIR: /run/user/0
+  REGISTRY_AUTH_FILE: /run/user/0/containers/auth.json
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -26,7 +27,7 @@ jobs:
       - name: Install and Setup
         run: |
           dnf install -y rpm-ostree ostree selinux-policy selinux-policy-targeted policycoreutils patch skopeo podman
-          mkdir -p /run/user/0
+          mkdir -p /run/user/0/containers/
 
       - name: Log in to ghcr.io
         uses: redhat-actions/podman-login@v1.2
