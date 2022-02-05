@@ -22,8 +22,11 @@ jobs:
       # Fix SELinux for the built OSTree: https://github.com/coreos/rpm-ostree/issues/1943
       options: --privileged --security-opt label:disable
     steps:
-      - name: Install dependencies
-        run: dnf install -y rpm-ostree ostree selinux-policy selinux-policy-targeted policycoreutils patch skopeo podman
+      - name: Install and Setup
+        run: |
+          dnf install -y rpm-ostree ostree selinux-policy selinux-policy-targeted policycoreutils patch skopeo podman
+          mkdir -p /tmp/podman-run-0/containers
+
 
       - name: Log in to ghcr.io
         uses: redhat-actions/podman-login@v1
