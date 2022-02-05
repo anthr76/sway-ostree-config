@@ -28,6 +28,7 @@ jobs:
         run: |
           dnf install -y rpm-ostree ostree selinux-policy selinux-policy-targeted policycoreutils patch skopeo podman
           mkdir -p /run/user/0/containers/
+          mkdir -p /github/home/.docker/
 
       - name: Log in to ghcr.io
         uses: redhat-actions/podman-login@v1.2
