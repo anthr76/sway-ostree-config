@@ -12,28 +12,31 @@ env:
   REGISTRY_PASSWORD: ${{ github.token }}
   IMAGE_REGISTRY: ghcr.io/${{ github.repository_owner }}
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
-    container:
-      image: registry.fedoraproject.org/fedora-minimal:latest
-      # Fix SELinux for the built OSTree: https://github.com/coreos/rpm-ostree/issues/1943
-      options: --privileged --security-opt label:disable
+  login:
+    name: Log in to GitHub Container Registry
+    runs-on: ubuntu-20.04
     steps:
-      - name: Install dependencies
-        run: microdnf install -y rpm-ostree ostree selinux-policy selinux-policy-targeted policycoreutils patch skopeo podman
-
-      - name: Clone repository
-        uses: actions/checkout@v2
-
       - name: Log in to ghcr.io
         uses: redhat-actions/podman-login@v1
         with:
           username: ${{ env.REGISTRY_USER }}
           password: ${{ env.REGISTRY_PASSWORD }}
           registry: ${{ env.IMAGE_REGISTRY }}
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    container:
+      image: quay.io/podman/stable
+      # Fix SELinux for the built OSTree: https://github.com/coreos/rpm-ostree/issues/1943
+      options: --privileged --security-opt label:disable
+    steps:
+      - name: Install dependencies
+        run: dnf install -y rpm-ostree ostree selinux-policy selinux-policy-targeted policycoreutils patch skopeo podman
+
+      - name: Clone repository
+        uses: actions/checkout@v2
 
       - name: Build and Push OSTree
         run: |
