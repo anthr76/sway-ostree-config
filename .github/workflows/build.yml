@@ -10,6 +10,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
     container:
       image: registry.fedoraproject.org/fedora-minimal:latest
       # Fix SELinux for the built OSTree: https://github.com/coreos/rpm-ostree/issues/1943
