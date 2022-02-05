@@ -17,6 +17,12 @@ podman run --rm -it --privileged \
   'microdnf install -y rpm-ostree selinux-policy selinux-policy-targeted policycoreutils && ./compose.sh'
 ```
 
+To use sway with rpm-ostree:
+
+```
+rpm-ostree rebase --experimental ostree-unverified-registry:ghcr.io/anthr76/sway-desktop:35
+```
+
 
 For some background, see:
 
