@@ -7,6 +7,10 @@ on:
     branches:
       - sway-f35
   workflow_dispatch:
+env:
+  REGISTRY_USER: ${{ github.actor }}
+  REGISTRY_PASSWORD: ${{ github.token }}
+  IMAGE_REGISTRY: ghcr.io/${{ github.repository_owner }}
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -24,6 +28,13 @@ jobs:
       - name: Clone repository
         uses: actions/checkout@v2
 
+      - name: Log in to ghcr.io
+        uses: redhat-actions/podman-login@v1
+        with:
+          username: ${{ env.REGISTRY_USER }}
+          password: ${{ env.REGISTRY_PASSWORD }}
+          registry: ${{ env.IMAGE_REGISTRY }}
+
       - name: Build and Push OSTree
         run: |
           CACHE=/var/cache/ostree
@@ -31,8 +42,7 @@ jobs:
           mkdir -p $CACHE
           ostree --repo=$REPO init --mode=archive-z2
           rpm-ostree compose tree --unified-core --cachedir=$CACHE --repo=$REPO sway-desktop.yaml
-          echo ${{ secrets.GITHUB_TOKEN }} | skopeo login ghcr.io --username anthr76 --password-stdin
-          ostree container encapsulate --repo=$REPO sway-desktop docker://ghcr.io/anthr76/sway-desktop:35
+          ostree container encapsulate --repo=$REPO sway-desktop docker://"${{ env.IMAGE_REGISTRY }}"/sway-desktop:35
 
       # upload-artifact@v2 has trouble with tens of thousands of files
       - name: Create repo tarball
