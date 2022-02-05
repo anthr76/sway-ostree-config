@@ -25,11 +25,10 @@ jobs:
       - name: Install and Setup
         run: |
           dnf install -y rpm-ostree ostree selinux-policy selinux-policy-targeted policycoreutils patch skopeo podman
-          mkdir -p /tmp/podman-run-0/containers
-
+          mkdir -p /run/user/0
 
       - name: Log in to ghcr.io
-        uses: redhat-actions/podman-login@v1
+        uses: redhat-actions/podman-login@v1.2
         with:
           username: ${{ env.REGISTRY_USER }}
           password: ${{ env.REGISTRY_PASSWORD }}
