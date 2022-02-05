@@ -11,9 +11,18 @@ env:
   REGISTRY_USER: ${{ github.actor }}
   REGISTRY_PASSWORD: ${{ github.token }}
   IMAGE_REGISTRY: ghcr.io/${{ github.repository_owner }}
-  XDG_RUNTIME_DIR: /run/user/0
-  REGISTRY_AUTH_FILE: /run/user/0/containers/auth.json
 jobs:
+  login:
+    name: Log in to GitHub Container Registry
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Log in to ghcr.io
+        uses: redhat-actions/podman-login@v1
+        with:
+          username: ${{ env.REGISTRY_USER }}
+          password: ${{ env.REGISTRY_PASSWORD }}
+          registry: ${{ env.IMAGE_REGISTRY }}
+          logout: false
   build:
     runs-on: ubuntu-latest
     permissions:
@@ -27,15 +36,6 @@ jobs:
       - name: Install and Setup
         run: |
           dnf install -y rpm-ostree ostree selinux-policy selinux-policy-targeted policycoreutils patch skopeo podman
-          mkdir -p /run/user/0/containers/
-          mkdir -p /github/home/.docker/
-
-      - name: Log in to ghcr.io
-        uses: redhat-actions/podman-login@v1.2
-        with:
-          username: ${{ env.REGISTRY_USER }}
-          password: ${{ env.REGISTRY_PASSWORD }}
-          registry: ${{ env.IMAGE_REGISTRY }}
 
       - name: Clone repository
         uses: actions/checkout@v2
