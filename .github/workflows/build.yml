@@ -12,17 +12,6 @@ env:
   REGISTRY_PASSWORD: ${{ github.token }}
   IMAGE_REGISTRY: ghcr.io/${{ github.repository_owner }}
 jobs:
-  login:
-    name: Log in to GitHub Container Registry
-    runs-on: ubuntu-20.04
-    steps:
-      - name: Log in to ghcr.io
-        uses: redhat-actions/podman-login@v1
-        with:
-          username: ${{ env.REGISTRY_USER }}
-          password: ${{ env.REGISTRY_PASSWORD }}
-          registry: ${{ env.IMAGE_REGISTRY }}
-          logout: false
   build:
     runs-on: ubuntu-latest
     permissions:
@@ -45,6 +34,7 @@ jobs:
           CACHE=/var/cache/ostree
           REPO=/var/tmp/repo
           mkdir -p $CACHE
+          echo ${{ env.REGISTRY_PASSWORD }} | skopeo login -u ${{ env.REGISTRY_USER }} --password-stdin ${{ env.IMAGE_REGISTRY }}
           ostree --repo=$REPO init --mode=archive-z2
           rpm-ostree compose tree --unified-core --cachedir=$CACHE --repo=$REPO sway-desktop.yaml
           ostree container encapsulate --repo=$REPO sway-desktop docker://"${{ env.IMAGE_REGISTRY }}"/sway-desktop:35
