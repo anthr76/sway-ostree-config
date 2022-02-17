@@ -7,11 +7,10 @@ rojig:
   summary: "Sway Desktop"
   license: MIT
 
-automatic-version-prefix: 35.<date:%Y>.1
+automatic-version-prefix: 35.<date:%Y-%m-%dT%H:%M:%S%z>.1
 repos:
   - fedora-35
   - fedora-35-updates
-  - fedora-35-updates-testing
 
 packages:
 # hardware/drivers
