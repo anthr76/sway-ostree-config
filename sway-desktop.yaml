@@ -21,6 +21,7 @@ packages:
   - alsa-sof-firmware
   - NetworkManager-wifi
   - NetworkManager-openvpn-gnome
+  - NetworkManager-tui
   - sane-backends
   - sane-backends-drivers-scanners
   - powertop
