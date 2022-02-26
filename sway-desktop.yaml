@@ -45,8 +45,6 @@ packages:
   - nss-altfiles
   - pciutils
   - selinux-policy-targeted
-  - policycoreutils
-  - libselinux-utils
   - sudo
   - usbutils
 # shell tools and development
