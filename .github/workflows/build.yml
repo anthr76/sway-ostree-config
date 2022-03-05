@@ -44,7 +44,7 @@ jobs:
         run: tar -czf /var/tmp/repo.tar.gz -C /var/tmp/repo .
 
       - name: Create repository artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: repository
           path: /var/tmp/repo.tar.gz
