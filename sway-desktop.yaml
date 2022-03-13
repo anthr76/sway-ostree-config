@@ -75,6 +75,7 @@ packages:
   - qemu-kvm
   - qemu-user-static
   - libvirt-daemon-kvm
+  - yubico-piv-tool-devel
 
 # desktop plumbing/apps
   - dejavu-sans-fonts
