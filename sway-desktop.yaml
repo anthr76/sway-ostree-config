@@ -1,0 +1,125 @@
+---
+include: fedora-common-ostree.yaml
+
+ref: sway-desktop
+rojig:
+  name: sway-desktop
+  summary: "Sway Desktop"
+  license: MIT
+
+automatic-version-prefix: 36.<date:%Y-%m-%dT%H:%M:%S>.1
+repos:
+  - fedora-36
+  - fedora-36-updates
+  - fedora-36-updates-testing
+
+packages:
+# hardware/drivers
+  - kernel
+  - kernel-modules-extra
+  - iwl6000g2a-firmware
+  - iwl7260-firmware
+  - alsa-sof-firmware
+  - NetworkManager-wifi
+  - NetworkManager-openvpn-gnome
+  - NetworkManager-tui
+  - sane-backends
+  - sane-backends-drivers-scanners
+  - powertop
+  - iwd
+  - wpa_supplicant
+  - udisks2-lvm2
+  - opensc
+  - fwupd
+  - fwupd-efi
+# basic system
+  - acl
+  - attr
+  - basesystem
+  - cryptsetup
+  - dnsmasq
+  - fedora-workstation-backgrounds
+  - filesystem
+  - glibc-langpack-de
+  - glibc-langpack-en
+  - hostname
+  - iproute
+  - kbd
+  - nss-altfiles
+  - pciutils
+  - selinux-policy-targeted
+  - sudo
+  - usbutils
+# shell tools and development
+  - bc
+  - gnupg2
+  - fpaste
+  - lsof
+  - man-db
+  - mtr
+  - tree
+  - bzip2
+  - zip
+  - unzip
+  - vim-enhanced
+  - bash-completion
+  - fish
+  - qemu-system-x86-core
+  - qemu-ui-sdl
+  - qemu-img
+  - openvpn
+  - openssh-server
+  - systemd-container
+  - git
+  - patchutils
+  - make
+  - ddccontrol
+  - qemu-kvm
+  - qemu-user-static
+  - libvirt-daemon-kvm
+  - yubico-piv-tool-devel
+
+# desktop plumbing/apps
+  - dejavu-sans-fonts
+  - dejavu-serif-fonts
+  - dejavu-sans-mono-fonts
+  - fontawesome-fonts
+  - google-noto-emoji-color-fonts
+  - google-noto-sans-fonts
+  - fira-code-fonts
+
+  # for wf-recorder
+  - xdg-desktop-portal-gtk
+
+  - pcmanfm
+  - nm-connection-editor
+  - gnome-keyring
+  - pinentry-gnome3
+  - gdm
+  - lxpolkit
+  - gnome-disk-utility
+  - gtimelog
+  - rofimoji
+
+# sway/wayland desktop
+  - sway
+  - sway-systemd
+  - virt-install
+  - swayidle
+  - swaylock
+  - kanshi
+  - mako
+  - playerctl
+  - waybar
+  - slurp
+  - grim
+  - xorg-x11-server-Xwayland
+  - wofi
+  - brightnessctl
+  - wl-clipboard
+
+exclude-packages:
+  # recommended by gtimelog
+  - yelp
+
+postprocess-script: sway-post.sh
