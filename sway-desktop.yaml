@@ -104,6 +104,7 @@ packages:
 # sway/wayland desktop
   - sway
   - sway-systemd
+  - alacritty
   - virt-install
   - swayidle
   - swaylock
