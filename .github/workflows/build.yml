@@ -40,4 +40,4 @@ jobs:
       - name: build and publish new tree
         run: |
           rpm-ostree compose tree --unified-core --cachedir=${{ env.CACHE }} --repo=${{ env.REPO }} sway-desktop.yaml
-          ostree container encapsulate --copymeta --repo=${{ env.REPO }} sway-desktop docker://"${{ env.IMAGE_REGISTRY }}"/sway-desktop:36
+          ostree container encapsulate --repo=${{ env.REPO }} sway-desktop docker://"${{ env.IMAGE_REGISTRY }}"/sway-desktop:36
