@@ -21,7 +21,7 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: quay.io/coreos-assembler/coreos-assembler
-      options: --entrypoint bash --privileged --user 1000:1000
+      options: --entrypoint bash --privileged --user 0:0
     steps:
       - name: Build and Push OSTree
         run: |
