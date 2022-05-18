@@ -123,4 +123,3 @@ exclude-packages:
   # recommended by gtimelog
   - yelp
 
-postprocess-script: sway-post.sh
