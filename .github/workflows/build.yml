@@ -18,9 +18,14 @@ jobs:
       image: quay.io/coreos-assembler/coreos-assembler
       options: --entrypoint bash --privileged --user 0:0
     steps:
+      - name: cache ostree
+        id: cache
+        uses: actions/cache@v3
+        with:
+          path: /var/cache/ostree
       - name: Clone repository
         uses: actions/checkout@v3
-      - name: Build and Push OSTree
+      - name: setup
         run: |
           set -eu
           CACHE=/var/cache/ostree
@@ -28,6 +33,10 @@ jobs:
           mkdir -p $CACHE
           echo ${{ env.REGISTRY_PASSWORD }} | skopeo login -u ${{ env.REGISTRY_USER }} --password-stdin ${{ env.IMAGE_REGISTRY }}
           ostree --repo=$REPO init --mode=bare-user
+      - name: pull previous commit
+        run: |
           ostree container image pull $REPO ostree-unverified-registry:ghcr.io/anthr76/sway-desktop:36
+      - name: build and publish new tree
+        run: |
           rpm-ostree compose tree --unified-core --cachedir=$CACHE --repo=$REPO sway-desktop.yaml
-          ostree container encapsulate --repo=$REPO sway-desktop docker://"${{ env.IMAGE_REGISTRY }}"/sway-desktop:36
+          ostree container encapsulate --copymeta --repo=$REPO sway-desktop docker://"${{ env.IMAGE_REGISTRY }}"/sway-desktop:36
