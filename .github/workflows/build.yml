@@ -23,7 +23,8 @@ jobs:
 
       - name: Build and Push OSTree
         run: |
-          sudo podman run --rm -it --privileged --entrypoint=bash quay.io/coreos-assembler/coreos-assembler
+          set -eu
+          sudo podman run --rm -it --privileged --entrypoint=bash -v $GITHUB_WORKSPACE:/work -w /work quay.io/coreos-assembler/coreos-assembler
           CACHE=/var/cache/ostree
           REPO=/var/tmp/repo
           mkdir -p $CACHE
