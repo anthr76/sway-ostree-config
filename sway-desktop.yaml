@@ -6,8 +6,11 @@ rojig:
   name: sway-desktop
   summary: "Sway Desktop"
   license: MIT
+  
+releasever: "36"
+automatic_version_prefix: "36"
+mutate-os-release: "36"
 
-automatic-version-prefix: 36.<date:%Y-%m-%dT%H:%M:%S>.1
 repos:
   - fedora-36
   - fedora-36-updates
