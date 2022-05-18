@@ -95,7 +95,7 @@ packages:
   - nm-connection-editor
   - gnome-keyring
   - pinentry-gnome3
-  - gdm
+  - greetd
   - lxpolkit
   - gnome-disk-utility
   - gtimelog
