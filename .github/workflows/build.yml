@@ -12,20 +12,17 @@ env:
   REGISTRY_PASSWORD: ${{ github.token }}
   IMAGE_REGISTRY: ghcr.io/${{ github.repository_owner }}
 jobs:
+  pull:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v3
   build:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
     container:
       image: quay.io/coreos-assembler/coreos-assembler
       options: --entrypoint bash
     steps:
-      - name: Clone repository
-        uses: actions/checkout@v3
-        #with:
-          #set-safe-directory: false
-
       - name: Build and Push OSTree
         run: |
           set -eu
