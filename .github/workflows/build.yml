@@ -18,14 +18,10 @@ jobs:
       contents: read
       packages: write
     container:
-      image: quay.io/podman/stable
+      image: quay.io/coreos-assembler/coreos-assembler
       # Fix SELinux for the built OSTree: https://github.com/coreos/rpm-ostree/issues/1943
-      options: --privileged --security-opt label:disable
+      options: --privileged
     steps:
-      - name: Install and Setup
-        run: |
-          dnf install -y rpm-ostree ostree selinux-policy selinux-policy-targeted policycoreutils patch skopeo podman
-
       - name: Clone repository
         uses: actions/checkout@v3
 
@@ -35,17 +31,7 @@ jobs:
           REPO=/var/tmp/repo
           mkdir -p $CACHE
           echo ${{ env.REGISTRY_PASSWORD }} | skopeo login -u ${{ env.REGISTRY_USER }} --password-stdin ${{ env.IMAGE_REGISTRY }}
-          ostree --repo=$REPO init --mode=archive-z2
+          ostree --repo=$REPO init --mode=bare-user
+          ostree container image pull $REPO ostree-unverified-registry:ghcr.io/anthr76/sway-desktop:36
           rpm-ostree compose tree --unified-core --cachedir=$CACHE --repo=$REPO sway-desktop.yaml
           ostree container encapsulate --repo=$REPO sway-desktop docker://"${{ env.IMAGE_REGISTRY }}"/sway-desktop:36
-
-      # upload-artifact@v2 has trouble with tens of thousands of files
-      - name: Create repo tarball
-        run: tar -czf /var/tmp/repo.tar.gz -C /var/tmp/repo .
-
-      - name: Create repository artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: repository
-          path: /var/tmp/repo.tar.gz
-          retention-days: 5
