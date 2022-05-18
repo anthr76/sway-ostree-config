@@ -17,6 +17,9 @@ jobs:
     permissions:
       contents: read
       packages: write
+    container:
+      image: quay.io/coreos-assembler/coreos-assembler
+      options: --privileged --entrypoint bash
     steps:
       - name: Clone repository
         uses: actions/checkout@v3
@@ -24,7 +27,6 @@ jobs:
       - name: Build and Push OSTree
         run: |
           set -eu
-          sudo podman run --rm -it --privileged --entrypoint=bash -v $GITHUB_WORKSPACE:/work -w /work quay.io/coreos-assembler/coreos-assembler
           CACHE=/var/cache/ostree
           REPO=/var/tmp/repo
           mkdir -p $CACHE
