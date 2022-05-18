@@ -19,12 +19,12 @@ jobs:
       packages: write
     container:
       image: quay.io/coreos-assembler/coreos-assembler
-      options: --privileged --entrypoint bash
+      options: --entrypoint bash
     steps:
       - name: Clone repository
         uses: actions/checkout@v3
-        with:
-          set-safe-directory: false
+        #with:
+          #set-safe-directory: false
 
       - name: Build and Push OSTree
         run: |
