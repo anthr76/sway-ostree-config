@@ -33,7 +33,7 @@ jobs:
           set -eu
           mkdir -p $CACHE
           echo ${{ env.REGISTRY_PASSWORD }} | skopeo login -u ${{ env.REGISTRY_USER }} --password-stdin ${{ env.IMAGE_REGISTRY }}
-          ostree --repo=${{ env.REPO }} init --mode=bare
+          ostree --repo=${{ env.REPO }} init --mode=archive-z2
       - name: pull previous commit
         run: |
           ostree container image pull $REPO ostree-unverified-registry:${{ env.IMAGE_REGISTRY }}/sway-desktop:36
