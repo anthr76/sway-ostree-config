@@ -20,12 +20,12 @@ jobs:
       image: quay.io/coreos-assembler/coreos-assembler
       options: --entrypoint bash --privileged --user 0:0
     steps:
-      - name: cache ostree
-        id: cache
-        uses: actions/cache@v3
-        with:
-          path: ${{ env.CACHE }}
-          key: ostree-cache-1
+      #- name: cache ostree
+        #id: cache
+        #uses: actions/cache@v3
+        #with:
+          #path: ${{ env.CACHE }}
+          #key: ostree-cache-1
       - name: Clone repository
         uses: actions/checkout@v3
       - name: setup
