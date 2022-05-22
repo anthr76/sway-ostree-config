@@ -99,7 +99,7 @@ packages:
   - gnome-keyring
   - pinentry-gnome3
   - greetd
-  - lxpolkit
+  - polkit-gnome
   - gnome-disk-utility
   - gtimelog
   - rofimoji
