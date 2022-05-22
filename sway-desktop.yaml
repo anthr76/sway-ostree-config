@@ -29,6 +29,7 @@ packages:
   - sane-backends
   - sane-backends-drivers-scanners
   - powertop
+  - power-profiles-daemon
   - iwd
   - wpa_supplicant
   - udisks2-lvm2
