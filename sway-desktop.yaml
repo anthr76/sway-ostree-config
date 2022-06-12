@@ -120,7 +120,7 @@ packages:
   - grim
   - xorg-x11-server-Xwayland
   - wofi
-  - brightnessctl
+  - light
   - wl-clipboard
 
 exclude-packages:
