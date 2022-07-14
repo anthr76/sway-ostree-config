@@ -23,7 +23,6 @@ jobs:
       - name: setup
         run: |
           set -eu
-          mkdir -p $CACHE
           echo ${{ env.REGISTRY_PASSWORD }} | skopeo login -u ${{ env.REGISTRY_USER }} --password-stdin ${{ env.IMAGE_REGISTRY }}
           ostree --repo=./repo init --mode=bare
           ostree container unencapsulate ostree-unverified-image:docker://"${{ env.IMAGE_REGISTRY }}"/sway-desktop:36 --repo=./repo --write-ref fedora/36/x86_64/sway-custom"
