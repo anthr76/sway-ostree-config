@@ -1,5 +1,9 @@
 ### sway rpm-ostree
 
+**NOTE:** Within the coming weeks this repository will no longer be active in favor of the offical ostree sway spin coming soon.
+
+https://fedoraproject.org/w/index.php?title=Changes/Fedora_Sway_Spin
+
 The goal of this repo is to build a Fedora desktop variant of [Sway](https://github.com/swaywm/sway) the Wayland WM.
 
 This would be a stop-gap until sway has an offical variant like Silverblue(Gnome)/Kiniote(KDE)
