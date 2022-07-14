@@ -11,8 +11,6 @@ env:
   REGISTRY_USER: ${{ github.actor }}
   REGISTRY_PASSWORD: ${{ github.token }}
   IMAGE_REGISTRY: ghcr.io/${{ github.repository_owner }}
-  CACHE: /var/cache/ostree
-  REPO: /var/tmp/repo
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -20,12 +18,6 @@ jobs:
       image: quay.io/coreos-assembler/coreos-assembler
       options: --entrypoint bash --privileged --user 0:0
     steps:
-      #- name: cache ostree
-        #id: cache
-        #uses: actions/cache@v3
-        #with:
-          #path: ${{ env.CACHE }}
-          #key: ostree-cache-1
       - name: Clone repository
         uses: actions/checkout@v3
       - name: setup
@@ -33,11 +25,10 @@ jobs:
           set -eu
           mkdir -p $CACHE
           echo ${{ env.REGISTRY_PASSWORD }} | skopeo login -u ${{ env.REGISTRY_USER }} --password-stdin ${{ env.IMAGE_REGISTRY }}
-          ostree --repo=${{ env.REPO }} init --mode=archive-z2
-      #- name: pull previous commit
-        #run: |
-          #ostree container image pull $REPO ostree-unverified-registry:${{ env.IMAGE_REGISTRY }}/sway-desktop:36
+          ostree --repo=./repo init --mode=bare
+          ostree container unencapsulate ostree-unverified-image:docker://"${{ env.IMAGE_REGISTRY }}"/sway-desktop:36 --repo=./repo --write-ref fedora/36/x86_64/sway-custom"
+
       - name: build and publish new tree
         run: |
-          rpm-ostree compose tree --unified-core --cachedir=${{ env.CACHE }} --repo=${{ env.REPO }} sway-desktop.yaml
-          ostree container encapsulate --repo=${{ env.REPO }} sway-desktop docker://"${{ env.IMAGE_REGISTRY }}"/sway-desktop:36
+          rpm-ostree compose tree --unified-core --repo=./repo sway-desktop.yaml
+          ostree container encapsulate --repo=./repo sway-desktop docker://"${{ env.IMAGE_REGISTRY }}"/sway-desktop:36
